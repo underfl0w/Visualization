@@ -30,7 +30,7 @@ terror['regio'] = terror['regio'].fillna('non').astype(str)
 
 
 
-terror_EU = terror.loc[:][(terror.regio == 'Western Europe') | (terror.regio == 'Eastern Europe')]# & (terror.land != 'Russia')]
+terror_EU = terror.loc[:][(terror.regio == 'Western Europe') | (terror.regio == 'Eastern Europe') ]#& (terror.land != 'Russia')& (terror.land != 'Ukraine')]
 terror_EU['day'][terror_EU.day == 0] = 1
 terror_EU['month'][terror_EU.month == 0] = 1
 terror_EU['datum'] = pd.to_datetime(terror_EU[['day', 'month', 'year']])
@@ -153,9 +153,10 @@ plt.show()
 
 # Catogories of targets being attacked by terrorists. 
 
-data = terror_EU.groupby("doel").id.count().sort_values(ascending=False)[:10]
+data = terror_EU.groupby("doel").id.count().sort_values(ascending=False)[:20]
 data = data.reset_index()
 data.columns = ["Doel", "Aantal aanslagen"]
-sns_plot = sns.barplot(data=data, x=data.columns[1], y=data.columns[0])
+clrs = ['blue']
+sns_plot = sns.barplot(data=data, x=data.columns[1], y=data.columns[0], palette=clrs)
 sns_plot.set_title('Aanslagen per soort doelwit (1970 - 2017)')
 plt.show()
